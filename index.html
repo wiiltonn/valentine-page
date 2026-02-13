@@ -103,7 +103,7 @@
     }
     textarea{ min-height: 120px; resize: vertical; }
 
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-start; }
 
     .btn{
       border:0;
@@ -263,16 +263,21 @@
     <div class="card" id="builderCard">
       <div class="pane">
         <h1>Customize your <span>Valentine</span> 💝</h1>
-        <p class="hint">Paste a photo link + write your message, preview it, then generate a shareable link.</p>
+        <p class="hint">Paste a main photo link + a bonus photo link, write your message, preview it, then generate a shareable link.</p>
 
         <div class="grid">
           <div class="pane" style="padding:0">
             <div class="field">
-              <label for="photoUrl">Image URL (recommended)</label>
+              <label for="photoUrl">Main Image URL</label>
               <input id="photoUrl" type="text" placeholder="Paste your RAW GitHub image link here..." />
               <div class="note">
                 Use a direct link that opens the image by itself (raw.githubusercontent.com). Google Drive often won’t embed.
               </div>
+            </div>
+
+            <div class="field">
+              <label for="bonusUrl">Bonus Image URL (final screen)</label>
+              <input id="bonusUrl" type="text" placeholder="Paste your second photo link here..." />
             </div>
 
             <div class="field">
@@ -287,7 +292,7 @@
             </div>
 
             <div class="note">
-              This site uses the URL to store your message + image link. Click “Copy shareable link” and send that to your girlfriend.
+              This site uses the URL to store your message + photo links. Click “Copy shareable link” and send that to your girlfriend.
             </div>
           </div>
 
@@ -313,7 +318,7 @@
           </div>
         </div>
 
-        <div class="small">Tip: Your website is <span class="mono">https://wiiltonn.github.io/valentine-page/</span></div>
+        <div class="small">Your site: <span class="mono">https://wiiltonn.github.io/valentine-page/</span></div>
       </div>
     </div>
 
@@ -421,11 +426,12 @@
       }
     }
 
-    function buildShareLink({msg, imgUrl}){
+    function buildShareLink({msg, imgUrl, bonusUrl}){
       const base = location.href.split('#')[0].split('?')[0];
       const params = new URLSearchParams();
       params.set('m', msg || '');
       if(imgUrl) params.set('img', imgUrl);
+      if(bonusUrl) params.set('bonus', bonusUrl);
       return base + '?' + params.toString();
     }
 
@@ -433,7 +439,8 @@
       const params = new URLSearchParams(location.search);
       const msg = params.get('m') ? dec(params.get('m')) : '';
       const imgUrl = params.get('img') ? dec(params.get('img')) : '';
-      return { msg, img: imgUrl };
+      const bonusUrl = params.get('bonus') ? dec(params.get('bonus')) : '';
+      return { msg, img: imgUrl, bonus: bonusUrl };
     }
 
     // ===== Confetti (simple)
@@ -522,13 +529,14 @@
     makeHearts();
 
     const incoming = parseIncoming();
-    const hasValentine = (incoming.msg || incoming.img);
+    const hasValentine = (incoming.msg || incoming.img || incoming.bonus);
 
     const builderCard = qs('#builderCard');
     const valentineCard = qs('#valentineCard');
 
     // Builder elements
     const photoUrlInput = qs('#photoUrl');
+    const bonusUrlInput = qs('#bonusUrl');
     const msgInput = qs('#message');
     const previewBtn = qs('#previewBtn');
     const copyLinkBtn = qs('#copyLinkBtn');
@@ -552,7 +560,8 @@
       copyLinkBtn.addEventListener('click', async () => {
         const msg = (msgInput.value || '').trim();
         const imgUrl = (photoUrlInput.value || '').trim();
-        const link = buildShareLink({msg, imgUrl});
+        const bonusUrl = (bonusUrlInput.value || '').trim();
+        const link = buildShareLink({msg, imgUrl, bonusUrl});
         try{
           await navigator.clipboard.writeText(link);
           copyLinkBtn.textContent = 'Copied ✅';
@@ -565,7 +574,8 @@
       openLinkBtn.addEventListener('click', () => {
         const msg = (msgInput.value || '').trim();
         const imgUrl = (photoUrlInput.value || '').trim();
-        window.location.href = buildShareLink({msg, imgUrl});
+        const bonusUrl = (bonusUrlInput.value || '').trim();
+        window.location.href = buildShareLink({msg, imgUrl, bonusUrl});
       });
     } else {
       // Live Valentine page
@@ -582,12 +592,13 @@
       const confetti = qs('#confetti');
       const btnArea = qs('#btnArea');
 
-      // Bonus photo uses same image
+      // Bonus photo uses BONUS link if provided, otherwise fall back to main image
       const bonusPhotoBox = qs('#bonusPhotoBox');
       const bonusPhoto = qs('#bonusPhoto');
-      if(incoming.img){
+      const bonusSrc = incoming.bonus || incoming.img;
+      if(bonusSrc){
         bonusPhotoBox.style.display='block';
-        bonusPhoto.src = incoming.img;
+        bonusPhoto.src = bonusSrc;
       }
 
       attachNoEvasion(noBtn, btnArea);
