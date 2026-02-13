@@ -1,631 +1,258 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Be My Valentine?</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine?</title>
 
-  <style>
-    :root{
-      --bg1:#ff5ea8;
-      --bg2:#ff2d55;
-      --bg3:#ffd6e7;
-      --card:#ffffffee;
-      --text:#2a0b19;
-      --muted:#6b2b44;
-      --yes:#19c37d;
-      --shadow: 0 18px 60px rgba(0,0,0,.18);
-      --radius: 22px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--text);
-      min-height:100svh;
-      background:
-        radial-gradient(1200px 800px at 20% 10%, var(--bg3), transparent 60%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 
-    /* floating hearts background */
-    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
-    .heart{
-      position:absolute;
-      width:18px; height:18px;
-      background: rgba(255,255,255,.65);
-      transform: rotate(45deg);
-      animation: floatUp linear infinite;
-      border-radius:4px;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,.12));
-    }
-    .heart:before,.heart:after{
-      content:"";
-      position:absolute;
-      width:18px; height:18px;
-      background: inherit;
-      border-radius:50%;
-    }
-    .heart:before{left:-9px; top:0}
-    .heart:after{left:0; top:-9px}
-    @keyframes floatUp{
-      from{ transform: translateY(110vh) rotate(45deg); opacity:0; }
-      10%{opacity:.9}
-      to{ transform: translateY(-20vh) rotate(45deg); opacity:0; }
-    }
-
-    .wrap{max-width: 980px; margin: 0 auto; padding: 28px 16px 60px;}
-    .topbar{
-      display:flex; align-items:center; justify-content:center;
-      margin: 8px 0 18px;
-      color: rgba(255,255,255,.95);
-      text-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-    .topbar .logo{font-family: Pacifico, cursive; font-size: 28px;}
-
-    .card{
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,.35);
-      overflow:hidden;
-    }
-
-    .pane{ padding: 18px; }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 16px;
-    }
-    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
-
-    h1{ margin:0 0 10px; font-size: 28px; line-height: 1.1; }
-    h1 span{ font-family: Pacifico, cursive; font-weight:400; }
-
-    .hint{color:var(--muted); margin: 0 0 14px;}
-    .field{ margin: 12px 0; }
-    label{ display:block; font-weight:800; margin: 0 0 6px; }
-
-    input[type="text"], textarea{
-      width:100%;
-      border-radius: 14px;
-      border: 1px solid rgba(0,0,0,.12);
-      padding: 12px 12px;
-      font-size: 15px;
-      outline:none;
-      background: rgba(255,255,255,.8);
-    }
-    textarea{ min-height: 120px; resize: vertical; }
-
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-start; }
-
-    .btn{
-      border:0;
-      border-radius: 16px;
-      padding: 12px 14px;
-      font-weight: 800;
-      cursor:pointer;
-      transition: transform .12s ease, filter .12s ease;
-      box-shadow: 0 10px 25px rgba(0,0,0,.12);
-    }
-    .btn:active{ transform: translateY(1px) scale(.99); }
-    .btn.green{ background: var(--yes); color:white; }
-    .btn.copy{ background: #111; color:#fff; }
-    .btn.pink{ background: #ffeff7; }
-
-    .note{
-      margin-top: 10px;
-      background: rgba(255, 231, 244, .7);
-      border: 1px dashed rgba(0,0,0,.15);
-      padding: 10px 12px;
-      border-radius: 14px;
-      color: #4b1730;
-      font-size: 13px;
-    }
-
-    /* Preview / Valentine card */
-    .val-wrap{ display:flex; align-items:center; justify-content:center; padding: 22px; min-height: 560px; }
-    .val-card{
-      width: min(640px, 100%);
-      border-radius: 26px;
-      padding: 22px 18px 18px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(255,255,255,.45);
-      box-shadow: var(--shadow);
-      position:relative;
-      text-align:center;
-    }
-
-    .headline{ font-family: Pacifico, cursive; font-size: 40px; margin: 6px 0 8px; color: #d1004b; }
-    @media (max-width: 420px){ .headline{font-size: 34px} }
-
-    .submsg{ color:#5a1733; font-size: 16px; margin: 12px 0 18px; }
-
-    /* Big, uncropped photo */
-    .photo{
-      width: 280px;
-      height: 280px;
-      margin: 16px auto 18px;
-      position:relative;
-      border-radius: 26px;
-      overflow:hidden;
-      box-shadow: 0 16px 35px rgba(0,0,0,.16);
-      border: 6px solid rgba(255,255,255,.85);
-      background: #fff;
-    }
-    .photo img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-    }
-
-    .actions{
-      display:flex;
-      gap: 12px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top: 14px;
-      min-height: 56px;
-      position:relative;
-    }
-    .yesBtn{ background: var(--yes); color:#fff; }
-    .noBtn{ background: #ffeff2; color: #b9002f; position:relative; }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.2);
-      color: rgba(255,255,255,.95);
-      border: 1px solid rgba(255,255,255,.25);
-      font-size: 12px;
-      margin: 10px auto 0;
-    }
-
-    /* Celebration + bonus overlays */
-    .overlay{
-      display:none;
-      position:absolute;
-      inset:0;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      background: radial-gradient(900px 650px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
-                  linear-gradient(135deg, rgba(255,94,168,.92), rgba(255,45,85,.92));
-      border-radius: 26px;
-      z-index: 5;
-    }
-    .overlay.show{ display:flex; }
-    .overlay .msg{
-      background: rgba(255,255,255,.94);
-      border-radius: 22px;
-      padding: 18px 16px;
-      width: min(520px, 96%);
-      box-shadow: var(--shadow);
-      text-align:center;
-    }
-    .overlay h2{
-      font-family: Pacifico, cursive;
-      margin: 0 0 6px;
-      color: #d1004b;
-      font-size: 34px;
-    }
-    .overlay p{ margin:0; color:#5a1733; font-size: 16px; }
-
-    /* Heart-shaped photo in bonus */
-    .bonusPhoto{ width: 230px; height: 230px; margin: 14px auto 0; position:relative; }
-    .bonusHeart{
-      width:100%; height:100%; position:absolute; inset:0;
-      background:#fff;
-      transform: rotate(45deg);
-      border-radius: 24px;
-      box-shadow: 0 16px 35px rgba(0,0,0,.18);
-      overflow:hidden;
-    }
-    .bonusHeart:before,.bonusHeart:after{
-      content:"";
-      position:absolute;
-      width:100%; height:100%;
-      background: inherit;
-      border-radius:50%;
-    }
-    .bonusHeart:before{ left:-50%; top:0 }
-    .bonusHeart:after{ left:0; top:-50% }
-    .bonusHeart img{
-  position:absolute;
-  inset:-35%;
-  width:170%;
-  height:170%;
-  object-fit: cover;
-  transform: rotate(-45deg);
+<style>
+body{
+  margin:0;
+  font-family:Nunito, sans-serif;
+  background:linear-gradient(135deg,#ff5ea8,#ff2d55);
+  color:#2a0b19;
+  overflow-x:hidden;
 }
 
-    canvas#confetti{ position:absolute; inset:0; width:100%; height:100%; border-radius: 26px; pointer-events:none; }
+/* Floating hearts */
+.hearts{position:fixed;inset:0;pointer-events:none}
+.heart{
+  position:absolute;width:18px;height:18px;background:rgba(255,255,255,.6);
+  transform:rotate(45deg);border-radius:4px;
+  animation:floatUp linear infinite;
+}
+.heart:before,.heart:after{
+  content:"";position:absolute;width:18px;height:18px;background:inherit;border-radius:50%;
+}
+.heart:before{left:-9px}
+.heart:after{top:-9px}
+@keyframes floatUp{
+  from{transform:translateY(110vh) rotate(45deg);opacity:0}
+  10%{opacity:.9}
+  to{transform:translateY(-20vh) rotate(45deg);opacity:0}
+}
 
-    .small{font-size:12px; color:rgba(255,255,255,.9); margin-top:12px; text-align:center}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-  </style>
+.wrap{max-width:900px;margin:0 auto;padding:30px 16px}
+.card{
+  background:white;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+
+.headline{
+  font-family:Pacifico;
+  font-size:40px;
+  text-align:center;
+  color:#d1004b;
+}
+
+.photo{
+  width:280px;height:280px;margin:20px auto;
+  border-radius:26px;overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+.photo img{width:100%;height:100%;object-fit:cover}
+
+.actions{text-align:center;margin-top:20px;position:relative}
+button{
+  padding:12px 18px;border:none;border-radius:16px;
+  font-weight:800;cursor:pointer;margin:6px;
+}
+.yes{background:#19c37d;color:white}
+.no{background:#ffeef2;color:#b9002f;position:absolute}
+
+.overlay{
+  display:none;position:absolute;inset:0;
+  background:linear-gradient(135deg,#ff5ea8,#ff2d55);
+  border-radius:24px;
+  align-items:center;justify-content:center;
+}
+.overlay.show{display:flex}
+
+.overlayBox{
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  text-align:center;
+}
+
+/* SVG Heart */
+.bonusPhoto{
+  width:320px;height:320px;margin:20px auto;
+}
+.bonusPhoto svg{width:100%;height:100%;display:block;
+  filter:drop-shadow(0 25px 50px rgba(0,0,0,.3));
+}
+
+canvas{position:absolute;inset:0;pointer-events:none}
+</style>
 </head>
 
 <body>
-  <div class="hearts" id="hearts"></div>
 
-  <div class="wrap">
-    <div class="topbar"><div class="logo">Valentine Ask Page</div></div>
+<div class="hearts" id="hearts"></div>
 
-    <!-- Builder -->
-    <div class="card" id="builderCard">
-      <div class="pane">
-        <h1>Customize your <span>Valentine</span> 💝</h1>
-        <p class="hint">Paste a main photo link + a bonus photo link, write your message, preview it, then generate a shareable link.</p>
+<div class="wrap">
 
-        <div class="grid">
-          <div class="pane" style="padding:0">
-            <div class="field">
-              <label for="photoUrl">Main Image URL</label>
-              <input id="photoUrl" type="text" placeholder="Paste your RAW GitHub image link here..." />
-              <div class="note">
-                Use a direct link that opens the image by itself (raw.githubusercontent.com). Google Drive often won’t embed.
-              </div>
-            </div>
+<div class="card" id="builder">
+<h2>Customize your Valentine 💝</h2>
 
-            <div class="field">
-              <label for="bonusUrl">Bonus Image URL (final screen)</label>
-              <input id="bonusUrl" type="text" placeholder="Paste your second photo link here..." />
-            </div>
+<input id="mainUrl" placeholder="Main image URL (raw GitHub link)" style="width:100%;margin:8px 0;padding:10px;border-radius:12px;border:1px solid #ccc">
+<input id="bonusUrl" placeholder="Bonus image URL (raw GitHub link)" style="width:100%;margin:8px 0;padding:10px;border-radius:12px;border:1px solid #ccc">
 
-            <div class="field">
-              <label for="message">Your message</label>
-              <textarea id="message" placeholder="Write something sweet...">I love you so much. You make my life brighter every day. 💕</textarea>
-            </div>
+<textarea id="message" style="width:100%;margin:8px 0;padding:10px;border-radius:12px;border:1px solid #ccc;height:100px">
+I love you so much. You make my life brighter every day. 💕
+</textarea>
 
-            <div class="row">
-              <button class="btn green" id="previewBtn" type="button">Preview</button>
-              <button class="btn copy" id="copyLinkBtn" type="button">Copy shareable link</button>
-              <button class="btn pink" id="openLinkBtn" type="button">Open valentine page</button>
-            </div>
+<button onclick="preview()">Preview</button>
+<button onclick="copyLink()">Copy shareable link</button>
+</div>
 
-            <div class="note">
-              This site uses the URL to store your message + photo links. Click “Copy shareable link” and send that to your girlfriend.
-            </div>
-          </div>
+<div class="card" id="valentine" style="display:none;position:relative">
+<canvas id="confetti"></canvas>
 
-          <div class="pane" style="padding:0">
-            <div class="val-wrap">
-              <div class="val-card">
-                <div class="headline">Will you be my Valentine?</div>
+<div class="headline">Will you be my Valentine?</div>
 
-                <div class="photo" id="photoBox" style="display:none">
-                  <img id="photoImg" alt="photo" />
-                </div>
+<div class="photo" id="mainPhoto" style="display:none">
+<img id="mainImg">
+</div>
 
-                <p class="submsg" id="msgOut"></p>
+<p id="liveMsg" style="text-align:center"></p>
 
-                <div class="actions">
-                  <button class="btn yesBtn" disabled>Yes 💖</button>
-                  <button class="btn noBtn" disabled>No 🙈</button>
-                </div>
+<div class="actions" id="btnArea">
+<button class="yes" id="yesBtn">Yes 💖</button>
+<button class="no" id="noBtn">No 🙈</button>
+</div>
 
-                <div class="pill">Preview only — buttons work on the shared page</div>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="overlay" id="bonusScreen">
+<div class="overlayBox">
+<h2 style="font-family:Pacifico;color:#d1004b">Bonus level unlocked ✨</h2>
+<p>This is my favourite photo of us 💗</p>
 
-        <div class="small">Your site: <span class="mono">https://wiiltonn.github.io/valentine-page/</span></div>
-      </div>
-    </div>
+<div class="bonusPhoto" id="bonusBox" style="display:none">
+<svg viewBox="0 0 100 100">
+<defs>
+<clipPath id="heartClip">
+<path d="M50 88
+C20 66,6 48,6 31
+C6 18,15 10,27 10
+C36 10,44 15,50 23
+C56 15,64 10,73 10
+C85 10,94 18,94 31
+C94 48,80 66,50 88 Z"/>
+</clipPath>
+</defs>
+<image id="bonusImg"
+href=""
+x="0" y="0" width="100" height="100"
+preserveAspectRatio="xMidYMid slice"
+clip-path="url(#heartClip)">
+</image>
+</svg>
+</div>
 
-    <!-- Valentine page -->
-    <div class="card" id="valentineCard" style="display:none">
-      <div class="val-wrap">
-        <div class="val-card" id="liveCard">
-          <canvas id="confetti"></canvas>
+<button onclick="closeBonus()">Ok come cuddle 💖</button>
+</div>
+</div>
 
-          <div class="headline">Will you be my Valentine?</div>
+</div>
+</div>
 
-          <div class="photo" id="livePhotoBox" style="display:none">
-            <img id="livePhoto" alt="photo" />
-          </div>
+<script>
+const qs = s=>document.querySelector(s)
 
-          <p class="submsg" id="liveMsg"></p>
+function makeHearts(){
+  const container=qs("#hearts")
+  for(let i=0;i<25;i++){
+    const h=document.createElement("div")
+    h.className="heart"
+    h.style.left=Math.random()*100+"vw"
+    h.style.animationDuration=(8+Math.random()*8)+"s"
+    container.appendChild(h)
+  }
+}
+makeHearts()
 
-          <div class="actions" id="btnArea">
-            <button class="btn yesBtn" id="yesBtn" type="button">Yes 💖</button>
-            <button class="btn noBtn" id="noBtn" type="button">No 🙈</button>
-          </div>
+function preview(){
+  const main=qs("#mainUrl").value.trim()
+  const bonus=qs("#bonusUrl").value.trim()
+  const msg=qs("#message").value.trim()
 
-          <!-- Celebration -->
-          <div class="overlay" id="celebrate">
-            <div class="msg">
-              <h2>I knew you’d say yes! 💕</h2>
-              <p>Happy Valentine’s Day, my love. Now come here 🥰</p>
-              <div style="margin-top:12px">
-                <button class="btn pink" id="bonusBtn" type="button">One more thing… 💝</button>
-              </div>
-            </div>
-          </div>
+  const url=location.href.split("?")[0]
+  const params=new URLSearchParams()
+  params.set("m",msg)
+  params.set("img",main)
+  params.set("bonus",bonus)
+  location.href=url+"?"+params.toString()
+}
 
-          <!-- Bonus screen -->
-          <div class="overlay" id="bonus">
-            <div class="msg">
-              <h2>Bonus level unlocked ✨</h2>
-              <p>This is my favourite photo of us. I love you 💗</p>
+function copyLink(){
+  const main=qs("#mainUrl").value.trim()
+  const bonus=qs("#bonusUrl").value.trim()
+  const msg=qs("#message").value.trim()
 
-              <div class="bonusPhoto" id="bonusPhotoBox" style="display:none">
-                <div class="bonusHeart"><img id="bonusPhoto" alt="photo" /></div>
-              </div>
+  const url=location.href.split("?")[0]
+  const params=new URLSearchParams()
+  params.set("m",msg)
+  params.set("img",main)
+  params.set("bonus",bonus)
+  const link=url+"?"+params.toString()
 
-              <div class="row" style="justify-content:center; margin-top:14px">
-                <button class="btn green" id="bonusClose" type="button">Ok come cuddle 💖</button>
-              </div>
-            </div>
-          </div>
+  navigator.clipboard.writeText(link)
+  alert("Copied!")
+}
 
-        </div>
-      </div>
-      <div class="small" style="margin-top:-8px">Tip: the “No” button is shy 😭</div>
-    </div>
-  </div>
+function startConfetti(canvas){
+  const ctx=canvas.getContext("2d")
+  canvas.width=canvas.offsetWidth
+  canvas.height=canvas.offsetHeight
+  for(let i=0;i<120;i++){
+    ctx.fillStyle="white"
+    ctx.fillRect(Math.random()*canvas.width,
+                 Math.random()*canvas.height,
+                 6,12)
+  }
+}
 
-  <script>
-    // ===== Helpers
-    const qs = (s) => document.querySelector(s);
-    const enc = (s) => encodeURIComponent(s || "");
-    const dec = (s) => decodeURIComponent(s || "");
+function closeBonus(){
+  qs("#bonusScreen").classList.remove("show")
+}
 
-    function makeHearts(){
-      const container = qs('#hearts');
-      const count = 26;
-      for(let i=0;i<count;i++){
-        const h = document.createElement('div');
-        h.className='heart';
-        const left = Math.random()*100;
-        const size = 12 + Math.random()*18;
-        const dur = 8 + Math.random()*10;
-        const delay = Math.random()*6;
-        h.style.left = left + 'vw';
-        h.style.width = size + 'px';
-        h.style.height = size + 'px';
-        h.style.animationDuration = dur + 's';
-        h.style.animationDelay = delay + 's';
-        h.style.opacity = (0.35 + Math.random()*0.5).toFixed(2);
-        container.appendChild(h);
-      }
-    }
+const params=new URLSearchParams(location.search)
+if(params.get("m")){
+  qs("#builder").style.display="none"
+  qs("#valentine").style.display="block"
 
-    function setPreview(photoSrc, msg){
-      qs('#msgOut').textContent = msg || '';
-      const photoBox = qs('#photoBox');
-      const img = qs('#photoImg');
-      if(photoSrc){
-        photoBox.style.display='block';
-        img.src = photoSrc;
-      } else {
-        photoBox.style.display='none';
-        img.removeAttribute('src');
-      }
-    }
+  qs("#liveMsg").textContent=params.get("m")
 
-    function setLive(photoSrc, msg){
-      qs('#liveMsg').textContent = msg || '';
-      const liveBox = qs('#livePhotoBox');
-      const liveImg = qs('#livePhoto');
-      if(photoSrc){
-        liveBox.style.display='block';
-        liveImg.src = photoSrc;
-      } else {
-        liveBox.style.display='none';
-        liveImg.removeAttribute('src');
-      }
-    }
+  const img=params.get("img")
+  if(img){
+    qs("#mainPhoto").style.display="block"
+    qs("#mainImg").src=img
+  }
 
-    function buildShareLink({msg, imgUrl, bonusUrl}){
-      const base = location.href.split('#')[0].split('?')[0];
-      const params = new URLSearchParams();
-      params.set('m', msg || '');
-      if(imgUrl) params.set('img', imgUrl);
-      if(bonusUrl) params.set('bonus', bonusUrl);
-      return base + '?' + params.toString();
-    }
+  const bonus=params.get("bonus")
+  if(bonus){
+    qs("#bonusBox").style.display="block"
+    qs("#bonusImg").setAttribute("href",bonus)
+  }
 
-    function parseIncoming(){
-      const params = new URLSearchParams(location.search);
-      const msg = params.get('m') ? dec(params.get('m')) : '';
-      const imgUrl = params.get('img') ? dec(params.get('img')) : '';
-      const bonusUrl = params.get('bonus') ? dec(params.get('bonus')) : '';
-      return { msg, img: imgUrl, bonus: bonusUrl };
-    }
+  qs("#yesBtn").onclick=()=>{
+    qs("#bonusScreen").classList.add("show")
+    startConfetti(qs("#confetti"))
+  }
 
-    // ===== Confetti (simple)
-    function startConfetti(canvas){
-      const ctx = canvas.getContext('2d');
-      const DPR = window.devicePixelRatio || 1;
+  const noBtn=qs("#noBtn")
+  const area=qs("#btnArea")
+  noBtn.onmouseenter=()=>{
+    noBtn.style.left=Math.random()*200+"px"
+    noBtn.style.top=Math.random()*80+"px"
+  }
+}
+</script>
 
-      function resize(){
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = Math.floor(rect.width * DPR);
-        canvas.height = Math.floor(rect.height * DPR);
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      const pieces = Array.from({length: 120}).map(()=>({
-        x: Math.random()*canvas.width,
-        y: -Math.random()*canvas.height,
-        w: 6 + Math.random()*10,
-        h: 8 + Math.random()*14,
-        vx: (-1 + Math.random()*2) * 1.6,
-        vy: 2.2 + Math.random()*3.0,
-        rot: Math.random()*Math.PI,
-        vr: (-1 + Math.random()*2) * 0.12,
-        a: 0.7 + Math.random()*0.3
-      }));
-
-      let stopAt = performance.now() + 4500;
-
-      function draw(){
-        const now = performance.now();
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        for(const p of pieces){
-          p.x += p.vx * DPR;
-          p.y += p.vy * DPR;
-          p.rot += p.vr;
-
-          if(p.y > canvas.height + 40) p.y = -40;
-          if(p.x < -40) p.x = canvas.width + 40;
-          if(p.x > canvas.width + 40) p.x = -40;
-
-          ctx.save();
-          ctx.globalAlpha = p.a;
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          ctx.fillStyle = 'rgba(255,255,255,.85)';
-          ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-          ctx.restore();
-        }
-        if(now < stopAt) requestAnimationFrame(draw);
-        else ctx.clearRect(0,0,canvas.width,canvas.height);
-      }
-      requestAnimationFrame(draw);
-    }
-
-    // ===== No button evasion
-    function attachNoEvasion(noBtn, area){
-      const noLines = ['No 🙈','Nope 😭','Try again 😜','Nice try 🤭','Hehe nope 💅','Almost 😅','Not today 😏'];
-      const move = () => {
-        const rect = area.getBoundingClientRect();
-        const b = noBtn.getBoundingClientRect();
-        const pad = 8;
-        const maxX = rect.width - b.width - pad;
-        const maxY = rect.height - b.height - pad;
-        const x = pad + Math.random() * Math.max(0, maxX - pad);
-        const y = pad + Math.random() * Math.max(0, maxY - pad);
-        noBtn.style.position = 'absolute';
-        noBtn.style.left = x + 'px';
-        noBtn.style.top = y + 'px';
-        noBtn.textContent = noLines[Math.floor(Math.random()*noLines.length)];
-      };
-
-      noBtn.addEventListener('mouseenter', move);
-      noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); }, {passive:false});
-      area.addEventListener('mousemove', (e) => {
-        const r = noBtn.getBoundingClientRect();
-        const dx = Math.abs(e.clientX - (r.left + r.width/2));
-        const dy = Math.abs(e.clientY - (r.top + r.height/2));
-        if(dx < 90 && dy < 70) move();
-      });
-
-      requestAnimationFrame(move);
-    }
-
-    // ===== Init
-    makeHearts();
-
-    const incoming = parseIncoming();
-    const hasValentine = (incoming.msg || incoming.img || incoming.bonus);
-
-    const builderCard = qs('#builderCard');
-    const valentineCard = qs('#valentineCard');
-
-    // Builder elements
-    const photoUrlInput = qs('#photoUrl');
-    const bonusUrlInput = qs('#bonusUrl');
-    const msgInput = qs('#message');
-    const previewBtn = qs('#previewBtn');
-    const copyLinkBtn = qs('#copyLinkBtn');
-    const openLinkBtn = qs('#openLinkBtn');
-
-    function refreshPreview(){
-      const msg = (msgInput.value || '').trim();
-      const imgUrl = (photoUrlInput.value || '').trim();
-      setPreview(imgUrl, msg);
-    }
-
-    if(!hasValentine){
-      builderCard.style.display='block';
-      valentineCard.style.display='none';
-      refreshPreview();
-
-      photoUrlInput.addEventListener('input', refreshPreview);
-      msgInput.addEventListener('input', refreshPreview);
-      previewBtn.addEventListener('click', refreshPreview);
-
-      copyLinkBtn.addEventListener('click', async () => {
-        const msg = (msgInput.value || '').trim();
-        const imgUrl = (photoUrlInput.value || '').trim();
-        const bonusUrl = (bonusUrlInput.value || '').trim();
-        const link = buildShareLink({msg, imgUrl, bonusUrl});
-        try{
-          await navigator.clipboard.writeText(link);
-          copyLinkBtn.textContent = 'Copied ✅';
-          setTimeout(()=> copyLinkBtn.textContent = 'Copy shareable link', 1400);
-        }catch(e){
-          prompt('Copy this link:', link);
-        }
-      });
-
-      openLinkBtn.addEventListener('click', () => {
-        const msg = (msgInput.value || '').trim();
-        const imgUrl = (photoUrlInput.value || '').trim();
-        const bonusUrl = (bonusUrlInput.value || '').trim();
-        window.location.href = buildShareLink({msg, imgUrl, bonusUrl});
-      });
-    } else {
-      // Live Valentine page
-      builderCard.style.display='none';
-      valentineCard.style.display='block';
-      setLive(incoming.img, incoming.msg);
-
-      const yesBtn = qs('#yesBtn');
-      const noBtn = qs('#noBtn');
-      const celebrate = qs('#celebrate');
-      const bonus = qs('#bonus');
-      const bonusBtn = qs('#bonusBtn');
-      const bonusClose = qs('#bonusClose');
-      const confetti = qs('#confetti');
-      const btnArea = qs('#btnArea');
-
-      // Bonus photo uses BONUS link if provided, otherwise fall back to main image
-      const bonusPhotoBox = qs('#bonusPhotoBox');
-      const bonusPhoto = qs('#bonusPhoto');
-      const bonusSrc = incoming.bonus || incoming.img;
-      if(bonusSrc){
-        bonusPhotoBox.style.display='block';
-        bonusPhoto.src = bonusSrc;
-      }
-
-      attachNoEvasion(noBtn, btnArea);
-
-      yesBtn.addEventListener('click', () => {
-        celebrate.classList.add('show');
-        startConfetti(confetti);
-      });
-
-      bonusBtn.addEventListener('click', () => {
-        celebrate.classList.remove('show');
-        bonus.classList.add('show');
-        startConfetti(confetti);
-      });
-
-      bonusClose.addEventListener('click', () => {
-        bonus.classList.remove('show');
-      });
-
-      // Tap outside msg to close celebrate
-      celebrate.addEventListener('click', (e) => {
-        if(e.target && e.target.closest('.msg')) return;
-        celebrate.classList.remove('show');
-      });
-    }
-  </script>
 </body>
 </html>
-
