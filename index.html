@@ -6,7 +6,8 @@
   <title>Be My Valentine?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg1:#ff5ea8;
@@ -16,7 +17,6 @@
       --text:#2a0b19;
       --muted:#6b2b44;
       --yes:#19c37d;
-      --no:#ff3b5c;
       --shadow: 0 18px 60px rgba(0,0,0,.18);
       --radius: 22px;
     }
@@ -26,8 +26,9 @@
       font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
       min-height:100svh;
-      background: radial-gradient(1200px 800px at 20% 10%, var(--bg3), transparent 60%),
-                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      background:
+        radial-gradient(1200px 800px at 20% 10%, var(--bg3), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
       overflow-x:hidden;
     }
 
@@ -51,34 +52,20 @@
     }
     .heart:before{left:-9px; top:0}
     .heart:after{left:0; top:-9px}
-
     @keyframes floatUp{
       from{ transform: translateY(110vh) rotate(45deg); opacity:0; }
       10%{opacity:.9}
       to{ transform: translateY(-20vh) rotate(45deg); opacity:0; }
     }
 
-    .wrap{
-      position:relative;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 28px 16px 60px;
-    }
-
+    .wrap{max-width: 980px; margin: 0 auto; padding: 28px 16px 60px;}
     .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
+      display:flex; align-items:center; justify-content:center;
       margin: 8px 0 18px;
       color: rgba(255,255,255,.95);
       text-shadow: 0 10px 24px rgba(0,0,0,.25);
     }
-    .topbar .logo{
-      font-family: Pacifico, cursive;
-      font-size: 28px;
-      letter-spacing:.2px;
-    }
+    .topbar .logo{font-family: Pacifico, cursive; font-size: 28px;}
 
     .card{
       background: var(--card);
@@ -89,28 +76,22 @@
       overflow:hidden;
     }
 
+    .pane{ padding: 18px; }
+
     .grid{
       display:grid;
       grid-template-columns: 1.05fr .95fr;
       gap: 16px;
     }
-    @media (max-width: 860px){
-      .grid{grid-template-columns:1fr}
-    }
+    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
 
-    .pane{ padding: 18px; }
-
-    h1{
-      margin: 0 0 10px;
-      font-size: 28px;
-      line-height: 1.1;
-    }
+    h1{ margin:0 0 10px; font-size: 28px; line-height: 1.1; }
     h1 span{ font-family: Pacifico, cursive; font-weight:400; }
 
     .hint{color:var(--muted); margin: 0 0 14px;}
-
     .field{ margin: 12px 0; }
     label{ display:block; font-weight:800; margin: 0 0 6px; }
+
     input[type="text"], textarea{
       width:100%;
       border-radius: 14px;
@@ -134,18 +115,9 @@
       box-shadow: 0 10px 25px rgba(0,0,0,.12);
     }
     .btn:active{ transform: translateY(1px) scale(.99); }
-    .btn.primary{ background: #fff; }
-    .btn.pink{ background: #ffeff7; }
     .btn.green{ background: var(--yes); color:white; }
     .btn.copy{ background: #111; color:#fff; }
-
-    .file{
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .file input[type="file"]{ width:100%; }
+    .btn.pink{ background: #ffeff7; }
 
     .note{
       margin-top: 10px;
@@ -157,16 +129,8 @@
       font-size: 13px;
     }
 
-    /* Preview (valentine) */
-    .val-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 22px;
-      min-height: 560px;
-      position:relative;
-    }
-
+    /* Preview / Valentine card */
+    .val-wrap{ display:flex; align-items:center; justify-content:center; padding: 22px; min-height: 560px; }
     .val-card{
       width: min(640px, 100%);
       border-radius: 26px;
@@ -178,44 +142,28 @@
       text-align:center;
     }
 
-    .headline{
-      font-family: Pacifico, cursive;
-      font-size: 40px;
-      margin: 6px 0 8px;
-      color: #d1004b;
-    }
-    @media (max-width: 420px){
-      .headline{font-size: 34px}
-    }
+    .headline{ font-family: Pacifico, cursive; font-size: 40px; margin: 6px 0 8px; color: #d1004b; }
+    @media (max-width: 420px){ .headline{font-size: 34px} }
 
-    .submsg{ color:#5a1733; font-size: 16px; margin: 12px 0 18px; position:relative; z-index:3; }
+    .submsg{ color:#5a1733; font-size: 16px; margin: 12px 0 18px; }
 
+    /* Big, uncropped photo */
     .photo{
-      width: 260px;
-      height: 260px;
-      margin: 16px auto 20px;
+      width: 280px;
+      height: 280px;
+      margin: 16px auto 18px;
       position:relative;
-      z-index: 2;
-    }
-    .photo .heartframe{
-      width:100%; 
-      height:100%;
-      position:absolute; 
-      inset:0;
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 16px 35px rgba(0,0,0,.16);
+      border-radius: 26px;
       overflow:hidden;
+      box-shadow: 0 16px 35px rgba(0,0,0,.16);
+      border: 6px solid rgba(255,255,255,.85);
+      background: #fff;
     }
-    
-    .photo .heartframe:before{ left:-50%; }
-    .photo .heartframe:after{ top:-50%; left:0; }
     .photo img{
-      position:absolute;
-      inset:0;
-      width: 100%;
-      height: 100%;
+      width:100%;
+      height:100%;
       object-fit: cover;
+      display:block;
     }
 
     .actions{
@@ -227,12 +175,22 @@
       min-height: 56px;
       position:relative;
     }
-
     .yesBtn{ background: var(--yes); color:#fff; }
     .noBtn{ background: #ffeff2; color: #b9002f; position:relative; }
 
-    /* Celebration */
-    .celebrate{
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.2);
+      color: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.25);
+      font-size: 12px;
+      margin: 10px auto 0;
+    }
+
+    /* Celebration + bonus overlays */
+    .overlay{
       display:none;
       position:absolute;
       inset:0;
@@ -240,43 +198,12 @@
       justify-content:center;
       padding: 18px;
       background: radial-gradient(900px 650px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
-                  linear-gradient(135deg, rgba(255,94,168,.9), rgba(255,45,85,.9));
-      border-radius: 26px;
-    }
-    .celebrate.show{ display:flex; }
-    .celebrate .msg{
-      background: rgba(255,255,255,.92);
-      border-radius: 22px;
-      padding: 18px 16px;
-      width: min(520px, 96%);
-      box-shadow: var(--shadow);
-    }
-    .celebrate h2{
-      font-family: Pacifico, cursive;
-      margin: 0 0 6px;
-      color: #d1004b;
-      font-size: 36px;
-    }
-    .celebrate p{ margin:0; color:#5a1733; font-size: 16px; }
-
-    /* Confetti canvas */
-    canvas#confetti{ position:absolute; inset:0; width:100%; height:100%; border-radius: 26px; pointer-events:none; }
-
-    /* Bonus overlay */
-    .bonus{
-      display:none;
-      position:absolute;
-      inset:0;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      background: radial-gradient(900px 650px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
-                  linear-gradient(135deg, rgba(255,94,168,.95), rgba(255,45,85,.95));
+                  linear-gradient(135deg, rgba(255,94,168,.92), rgba(255,45,85,.92));
       border-radius: 26px;
       z-index: 5;
     }
-    .bonus.show{ display:flex; }
-    .bonus .msg{
+    .overlay.show{ display:flex; }
+    .overlay .msg{
       background: rgba(255,255,255,.94);
       border-radius: 22px;
       padding: 18px 16px;
@@ -284,15 +211,16 @@
       box-shadow: var(--shadow);
       text-align:center;
     }
-    .bonus h2{
+    .overlay h2{
       font-family: Pacifico, cursive;
       margin: 0 0 6px;
       color: #d1004b;
       font-size: 34px;
     }
-    .bonus p{ margin:0; color:#5a1733; font-size: 16px; }
+    .overlay p{ margin:0; color:#5a1733; font-size: 16px; }
 
-    .bonusPhoto{ width: 220px; height: 220px; margin: 14px auto 0; position:relative; }
+    /* Heart-shaped photo in bonus */
+    .bonusPhoto{ width: 230px; height: 230px; margin: 14px auto 0; position:relative; }
     .bonusHeart{
       width:100%; height:100%; position:absolute; inset:0;
       background:#fff;
@@ -318,89 +246,33 @@
       transform: rotate(-45deg);
     }
 
+    canvas#confetti{ position:absolute; inset:0; width:100%; height:100%; border-radius: 26px; pointer-events:none; }
+
     .small{font-size:12px; color:rgba(255,255,255,.9); margin-top:12px; text-align:center}
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.2);
-      color: rgba(255,255,255,.95);
-      border: 1px solid rgba(255,255,255,.25);
-      font-size: 12px;
-      margin: 10px auto 0;
-    }
-
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-  
-    /* Fun extras */
-    .yesBtn{ animation: pulse 1.35s ease-in-out infinite; }
-    @keyframes pulse{ 0%,100%{ transform: translateY(0) scale(1);} 50%{ transform: translateY(-1px) scale(1.05);} }
-
-    .burst-heart{
-      position: fixed;
-      font-size: 22px;
-      pointer-events: none;
-      will-change: transform, opacity;
-      animation: burst 900ms ease-out forwards;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.2));
-      z-index: 9999;
-    }
-    @keyframes burst{
-      0%{ transform: translate(0,0) scale(.7); opacity: 0; }
-      12%{ opacity: 1; }
-      100%{ transform: translate(var(--dx), var(--dy)) scale(1.25); opacity: 0; }
-    }
-
-    .mini-toast{
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(255,255,255,.55);
-      border-radius: 999px;
-      padding: 10px 12px;
-      box-shadow: var(--shadow);
-      color: #5a1733;
-      font-weight: 800;
-      font-size: 13px;
-      z-index: 9998;
-      opacity: 0;
-      transition: opacity .18s ease, transform .18s ease;
-    }
-    .mini-toast.show{ opacity: 1; transform: translateX(-50%) translateY(-4px); }
-</style>
+  </style>
 </head>
+
 <body>
   <div class="hearts" id="hearts"></div>
 
   <div class="wrap">
-    <div class="topbar">
-      <div class="logo">Valentine Ask Page</div>
-    </div>
+    <div class="topbar"><div class="logo">Valentine Ask Page</div></div>
 
+    <!-- Builder -->
     <div class="card" id="builderCard">
       <div class="pane">
         <h1>Customize your <span>Valentine</span> 💝</h1>
-        <p class="hint">Upload a photo, write your message, preview it, then generate a shareable link.</p>
+        <p class="hint">Paste a photo link + write your message, preview it, then generate a shareable link.</p>
 
         <div class="grid">
           <div class="pane" style="padding:0">
             <div class="field">
-              <label for="photo">Photo (optional)</label>
-              <div class="file">
-                <input id="photo" type="file" accept="image/*" />
-              </div>
+              <label for="photoUrl">Image URL (recommended)</label>
+              <input id="photoUrl" type="text" placeholder="Paste your RAW GitHub image link here..." />
               <div class="note">
-                Tip: keep the image small for sharing. This page embeds the photo into the link, so very large photos can make the link too long.
-                If the link fails to open, use a smaller image or host it somewhere and paste the image URL instead.
+                Use a direct link that opens the image by itself (raw.githubusercontent.com). Google Drive often won’t embed.
               </div>
-            </div>
-
-            <div class="field">
-              <label for="photoUrl">Or use an image URL (recommended for easy sharing)</label>
-              <input id="photoUrl" type="text" placeholder="https://... (optional)" />
             </div>
 
             <div class="field">
@@ -409,92 +281,96 @@
             </div>
 
             <div class="row">
-              <button class="btn green" id="previewBtn">Preview</button>
-              <button class="btn copy" id="copyLinkBtn" title="Copies a shareable link">Copy shareable link</button>
-              <button class="btn pink" id="openLinkBtn">Open valentine page</button>
+              <button class="btn green" id="previewBtn" type="button">Preview</button>
+              <button class="btn copy" id="copyLinkBtn" type="button">Copy shareable link</button>
+              <button class="btn pink" id="openLinkBtn" type="button">Open valentine page</button>
             </div>
 
             <div class="note">
-              Privacy note: This is just a single HTML file. If you use an image URL, whoever has the link can load that image.
-              If you embed the photo, it will be inside the URL.
+              This site uses the URL to store your message + image link. Click “Copy shareable link” and send that to your girlfriend.
             </div>
           </div>
 
           <div class="pane" style="padding:0">
             <div class="val-wrap">
-              <div class="val-card" id="previewCard">
+              <div class="val-card">
                 <div class="headline">Will you be my Valentine?</div>
+
                 <div class="photo" id="photoBox" style="display:none">
-                  <div class="heartframe"><img id="photoImg" alt="photo" /></div>
+                  <img id="photoImg" alt="photo" />
                 </div>
+
                 <p class="submsg" id="msgOut"></p>
+
                 <div class="actions">
                   <button class="btn yesBtn" disabled>Yes 💖</button>
                   <button class="btn noBtn" disabled>No 🙈</button>
                 </div>
+
                 <div class="pill">Preview only — buttons work on the shared page</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="small">Made with ❤️ — save as <span class="mono">valentine.html</span> and host on GitHub Pages / Netlify / Vercel for a clean link.</div>
+        <div class="small">Tip: Your website is <span class="mono">https://wiiltonn.github.io/valentine-page/</span></div>
       </div>
     </div>
 
+    <!-- Valentine page -->
     <div class="card" id="valentineCard" style="display:none">
       <div class="val-wrap">
         <div class="val-card" id="liveCard">
           <canvas id="confetti"></canvas>
+
           <div class="headline">Will you be my Valentine?</div>
 
           <div class="photo" id="livePhotoBox" style="display:none">
-            <div class="heartframe"><img id="livePhoto" alt="photo" /></div>
+            <img id="livePhoto" alt="photo" />
           </div>
 
           <p class="submsg" id="liveMsg"></p>
 
           <div class="actions" id="btnArea">
-            <button class="btn yesBtn" id="yesBtn">Yes 💖</button>
-            <button class="btn noBtn" id="noBtn">No 🙈</button>
+            <button class="btn yesBtn" id="yesBtn" type="button">Yes 💖</button>
+            <button class="btn noBtn" id="noBtn" type="button">No 🙈</button>
           </div>
 
-          <div class="celebrate" id="celebrate">
+          <!-- Celebration -->
+          <div class="overlay" id="celebrate">
             <div class="msg">
               <h2>I knew you’d say yes! 💕</h2>
               <p>Happy Valentine’s Day, my love. Now come here 🥰</p>
               <div style="margin-top:12px">
-                <button class="btn pink" id="bonusBtn">One more thing… 💝</button>
+                <button class="btn pink" id="bonusBtn" type="button">One more thing… 💝</button>
               </div>
             </div>
           </div>
 
-          <div class="bonus" id="bonus">
+          <!-- Bonus screen -->
+          <div class="overlay" id="bonus">
             <div class="msg">
               <h2>Bonus level unlocked ✨</h2>
-              <p id="bonusText">This is my favourite photo of us. I love you 💗</p>
+              <p>This is my favourite photo of us. I love you 💗</p>
 
               <div class="bonusPhoto" id="bonusPhotoBox" style="display:none">
                 <div class="bonusHeart"><img id="bonusPhoto" alt="photo" /></div>
               </div>
 
               <div class="row" style="justify-content:center; margin-top:14px">
-                <button class="btn green" id="bonusClose">Ok come cuddle 💖</button>
+                <button class="btn green" id="bonusClose" type="button">Ok come cuddle 💖</button>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-      <div class="small" style="margin-top:-8px">Tip: long-press the screen for a cute pause, then tap anywhere to keep going.</div>
+      <div class="small" style="margin-top:-8px">Tip: the “No” button is shy 😭</div>
     </div>
-      </div>
-      <div class="small" style="margin-top:-8px">Tip: long-press the screen for a cute pause, then tap anywhere to keep going.</div>
-    </div>
-
   </div>
 
   <script>
-    // ===== Helpers =====
+    // ===== Helpers
     const qs = (s) => document.querySelector(s);
     const enc = (s) => encodeURIComponent(s || "");
     const dec = (s) => decodeURIComponent(s || "");
@@ -519,35 +395,10 @@
       }
     }
 
-    function compressImageToDataURL(file, maxW=900, quality=0.78){
-      return new Promise((resolve, reject)=>{
-        const reader = new FileReader();
-        reader.onload = () => {
-          const img = new Image();
-          img.onload = () => {
-            const scale = Math.min(1, maxW / img.width);
-            const w = Math.round(img.width * scale);
-            const h = Math.round(img.height * scale);
-            const canvas = document.createElement('canvas');
-            canvas.width = w; canvas.height = h;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, w, h);
-            const dataUrl = canvas.toDataURL('image/jpeg', quality);
-            resolve(dataUrl);
-          };
-          img.onerror = reject;
-          img.src = reader.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
     function setPreview(photoSrc, msg){
-      const msgOut = qs('#msgOut');
+      qs('#msgOut').textContent = msg || '';
       const photoBox = qs('#photoBox');
       const img = qs('#photoImg');
-      msgOut.textContent = msg || '';
       if(photoSrc){
         photoBox.style.display='block';
         img.src = photoSrc;
@@ -570,30 +421,26 @@
       }
     }
 
-    function buildShareLink({msg, imgUrl, imgData}){
-      // Prefer imgUrl if present; otherwise embed compressed data URL in hash
+    function buildShareLink({msg, imgUrl}){
       const base = location.href.split('#')[0].split('?')[0];
       const params = new URLSearchParams();
       params.set('m', msg || '');
       if(imgUrl) params.set('img', imgUrl);
-      // Use hash for big data to avoid server logs/query truncation.
-      const hash = imgData ? '#d=' + enc(imgData) : '';
-      return base + '?' + params.toString() + hash;
+      return base + '?' + params.toString();
     }
 
     function parseIncoming(){
       const params = new URLSearchParams(location.search);
       const msg = params.get('m') ? dec(params.get('m')) : '';
       const imgUrl = params.get('img') ? dec(params.get('img')) : '';
-      let imgData = '';
-      if(location.hash.startsWith('#d=')) imgData = dec(location.hash.slice(3));
-      return { msg, img: imgUrl || imgData };
+      return { msg, img: imgUrl };
     }
 
-    // ===== Confetti =====
+    // ===== Confetti (simple)
     function startConfetti(canvas){
       const ctx = canvas.getContext('2d');
       const DPR = window.devicePixelRatio || 1;
+
       function resize(){
         const rect = canvas.getBoundingClientRect();
         canvas.width = Math.floor(rect.width * DPR);
@@ -602,7 +449,7 @@
       resize();
       window.addEventListener('resize', resize);
 
-      const pieces = Array.from({length: 130}).map(()=>({
+      const pieces = Array.from({length: 120}).map(()=>({
         x: Math.random()*canvas.width,
         y: -Math.random()*canvas.height,
         w: 6 + Math.random()*10,
@@ -611,56 +458,40 @@
         vy: 2.2 + Math.random()*3.0,
         rot: Math.random()*Math.PI,
         vr: (-1 + Math.random()*2) * 0.12,
-        alpha: 0.7 + Math.random()*0.3,
+        a: 0.7 + Math.random()*0.3
       }));
 
-      let running = true;
-      let stopAt = performance.now() + 5200;
+      let stopAt = performance.now() + 4500;
 
       function draw(){
-        if(!running) return;
         const now = performance.now();
         ctx.clearRect(0,0,canvas.width,canvas.height);
         for(const p of pieces){
           p.x += p.vx * DPR;
           p.y += p.vy * DPR;
           p.rot += p.vr;
+
           if(p.y > canvas.height + 40) p.y = -40;
           if(p.x < -40) p.x = canvas.width + 40;
           if(p.x > canvas.width + 40) p.x = -40;
 
           ctx.save();
-          ctx.globalAlpha = p.alpha;
+          ctx.globalAlpha = p.a;
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rot);
-          // no explicit colors; use gradient-like grayscale confetti
           ctx.fillStyle = 'rgba(255,255,255,.85)';
           ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
           ctx.restore();
         }
-        if(now < stopAt){
-          requestAnimationFrame(draw);
-        } else {
-          running = false;
-          ctx.clearRect(0,0,canvas.width,canvas.height);
-        }
+        if(now < stopAt) requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,canvas.width,canvas.height);
       }
       requestAnimationFrame(draw);
     }
 
-    // ===== No button evasion =====
+    // ===== No button evasion
     function attachNoEvasion(noBtn, area){
-      const noLines = [
-        'No 🙈',
-        'Nope 😭',
-        'Try again 😜',
-        'Nice try 🤭',
-        'Not a chance 😏',
-        'You missed 😅',
-        'Hehe nope 💅',
-        'Stoppp 😳'
-      ];
-
+      const noLines = ['No 🙈','Nope 😭','Try again 😜','Nice try 🤭','Hehe nope 💅','Almost 😅','Not today 😏'];
       const move = () => {
         const rect = area.getBoundingClientRect();
         const b = noBtn.getBoundingClientRect();
@@ -675,11 +506,8 @@
         noBtn.textContent = noLines[Math.floor(Math.random()*noLines.length)];
       };
 
-      // Desktop hover
       noBtn.addEventListener('mouseenter', move);
-      // Mobile taps
       noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); }, {passive:false});
-      // Also move when the user gets close (optional, fun)
       area.addEventListener('mousemove', (e) => {
         const r = noBtn.getBoundingClientRect();
         const dx = Math.abs(e.clientX - (r.left + r.width/2));
@@ -687,57 +515,11 @@
         if(dx < 90 && dy < 70) move();
       });
 
-      // set initial absolute positioning
       requestAnimationFrame(move);
     }
 
-    // ===== Main =====
+    // ===== Init
     makeHearts();
-
-    // Heart burst wherever you tap/click (cute + mobile friendly)
-    function heartBurst(x, y){
-      const emojis = ['💖','💕','💘','💗','💞','❤️'];
-      for(let i=0;i<10;i++){
-        const el = document.createElement('div');
-        el.className = 'burst-heart';
-        el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-        el.style.left = (x - 8) + 'px';
-        el.style.top = (y - 8) + 'px';
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 60 + Math.random()*70;
-        const dx = Math.cos(angle) * dist;
-        const dy = Math.sin(angle) * dist - (30 + Math.random()*40);
-        el.style.setProperty('--dx', dx + 'px');
-        el.style.setProperty('--dy', dy + 'px');
-        document.body.appendChild(el);
-        setTimeout(()=> el.remove(), 950);
-      }
-    }
-
-    // Tiny toast helper
-    const toast = document.createElement('div');
-    toast.className = 'mini-toast';
-    document.body.appendChild(toast);
-    let toastTimer;
-    function showToast(text){
-      toast.textContent = text;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(()=> toast.classList.remove('show'), 1200);
-    }
-
-    document.addEventListener('click', (e)=>{
-      // Avoid bursts when clicking buttons in builder to keep it neat
-      const t = e.target;
-      if(t && (t.closest('button') || t.closest('input') || t.closest('textarea'))) return;
-      heartBurst(e.clientX, e.clientY);
-    });
-    document.addEventListener('touchstart', (e)=>{
-      const t = e.target;
-      if(t && (t.closest('button') || t.closest('input') || t.closest('textarea'))) return;
-      const touch = e.touches && e.touches[0];
-      if(touch) heartBurst(touch.clientX, touch.clientY);
-    }, {passive:true});
 
     const incoming = parseIncoming();
     const hasValentine = (incoming.msg || incoming.img);
@@ -745,81 +527,48 @@
     const builderCard = qs('#builderCard');
     const valentineCard = qs('#valentineCard');
 
-    let embeddedDataUrl = '';
-
-    // Builder UI
-    const photoInput = qs('#photo');
+    // Builder elements
     const photoUrlInput = qs('#photoUrl');
     const msgInput = qs('#message');
-
-    function currentState(){
-      const msg = msgInput.value.trim();
-      const imgUrl = photoUrlInput.value.trim();
-      const imgData = imgUrl ? '' : embeddedDataUrl; // prefer URL
-      const img = imgUrl || imgData;
-      return { msg, imgUrl, imgData, img };
-    }
+    const previewBtn = qs('#previewBtn');
+    const copyLinkBtn = qs('#copyLinkBtn');
+    const openLinkBtn = qs('#openLinkBtn');
 
     function refreshPreview(){
-      const {msg, img} = currentState();
-      setPreview(img, msg);
+      const msg = (msgInput.value || '').trim();
+      const imgUrl = (photoUrlInput.value || '').trim();
+      setPreview(imgUrl, msg);
     }
 
-    photoInput.addEventListener('change', async () => {
-      const file = photoInput.files && photoInput.files[0];
-      if(!file) return;
-      // If they upload a file, we clear URL field so the embed is used
-      photoUrlInput.value = '';
-      embeddedDataUrl = await compressImageToDataURL(file);
+    if(!hasValentine){
+      builderCard.style.display='block';
+      valentineCard.style.display='none';
       refreshPreview();
-    });
 
-    photoUrlInput.addEventListener('input', () => {
-      if(photoUrlInput.value.trim()) embeddedDataUrl = '';
-      refreshPreview();
-    });
+      photoUrlInput.addEventListener('input', refreshPreview);
+      msgInput.addEventListener('input', refreshPreview);
+      previewBtn.addEventListener('click', refreshPreview);
 
-    msgInput.addEventListener('input', refreshPreview);
+      copyLinkBtn.addEventListener('click', async () => {
+        const msg = (msgInput.value || '').trim();
+        const imgUrl = (photoUrlInput.value || '').trim();
+        const link = buildShareLink({msg, imgUrl});
+        try{
+          await navigator.clipboard.writeText(link);
+          copyLinkBtn.textContent = 'Copied ✅';
+          setTimeout(()=> copyLinkBtn.textContent = 'Copy shareable link', 1400);
+        }catch(e){
+          prompt('Copy this link:', link);
+        }
+      });
 
-    const previewBtn = qs('#previewBtn');
-    if(previewBtn) previewBtn.addEventListener('click', refreshPreview);
-
-    function copyToClipboard(text){
-      return navigator.clipboard.writeText(text);
-    }
-
-    const copyLinkBtn = qs('#copyLinkBtn');
-    if(copyLinkBtn) copyLinkBtn.addEventListener('click', async () => {
-      const {msg, imgUrl, imgData} = currentState();
-      const link = buildShareLink({msg, imgUrl, imgData});
-      try{
-        await copyToClipboard(link);
-        copyLinkBtn.textContent = 'Copied ✅';
-        setTimeout(()=> copyLinkBtn.textContent = 'Copy shareable link', 1600);
-      } catch(e){
-        prompt('Copy this link:', link);
-      }
-    });
-      try{
-        await copyToClipboard(link);
-        qs('#copyLinkBtn').textContent = 'Copied ✅';
-        setTimeout(()=> qs('#copyLinkBtn').textContent = 'Copy shareable link', 1600);
-      } catch(e){
-        prompt('Copy this link:', link);
-      }
-    });
-
-    const openLinkBtn = qs('#openLinkBtn');
-    if(openLinkBtn) openLinkBtn.addEventListener('click', () => {
-      const {msg, imgUrl, imgData} = currentState();
-      const link = buildShareLink({msg, imgUrl, imgData});
-      window.location.href = link;
-    });
-      window.location.href = link;
-    });
-
-    // If incoming params exist, show Valentine page
-    if(hasValentine){
+      openLinkBtn.addEventListener('click', () => {
+        const msg = (msgInput.value || '').trim();
+        const imgUrl = (photoUrlInput.value || '').trim();
+        window.location.href = buildShareLink({msg, imgUrl});
+      });
+    } else {
+      // Live Valentine page
       builderCard.style.display='none';
       valentineCard.style.display='block';
       setLive(incoming.img, incoming.msg);
@@ -827,55 +576,43 @@
       const yesBtn = qs('#yesBtn');
       const noBtn = qs('#noBtn');
       const celebrate = qs('#celebrate');
+      const bonus = qs('#bonus');
+      const bonusBtn = qs('#bonusBtn');
+      const bonusClose = qs('#bonusClose');
       const confetti = qs('#confetti');
       const btnArea = qs('#btnArea');
+
+      // Bonus photo uses same image
+      const bonusPhotoBox = qs('#bonusPhotoBox');
+      const bonusPhoto = qs('#bonusPhoto');
+      if(incoming.img){
+        bonusPhotoBox.style.display='block';
+        bonusPhoto.src = incoming.img;
+      }
 
       attachNoEvasion(noBtn, btnArea);
 
       yesBtn.addEventListener('click', () => {
         celebrate.classList.add('show');
         startConfetti(confetti);
-        showToast('Correct answer 😌💘');
       });
-
-      // Bonus screen controls
-      const bonus = qs('#bonus');
-      const bonusBtn = qs('#bonusBtn');
-      const bonusClose = qs('#bonusClose');
-      const bonusPhotoBox = qs('#bonusPhotoBox');
-      const bonusPhoto = qs('#bonusPhoto');
-
-      // Put the same photo into the bonus heart
-      if(incoming.img){
-        bonusPhotoBox.style.display = 'block';
-        bonusPhoto.src = incoming.img;
-      }
 
       bonusBtn.addEventListener('click', () => {
         celebrate.classList.remove('show');
         bonus.classList.add('show');
         startConfetti(confetti);
-        showToast('Bonus unlocked ✨');
       });
 
       bonusClose.addEventListener('click', () => {
         bonus.classList.remove('show');
       });
 
-      // Tap anywhere to close celebration (but not the bonus button)
+      // Tap outside msg to close celebrate
       celebrate.addEventListener('click', (e) => {
-        if(e.target && e.target.closest('#bonusBtn')) return;
+        if(e.target && e.target.closest('.msg')) return;
         celebrate.classList.remove('show');
       });
-      });
-
-    } else {
-      // Default: builder page
-      builderCard.style.display='block';
-      valentineCard.style.display='none';
-      refreshPreview();
     }
-
   </script>
 </body>
 </html>
