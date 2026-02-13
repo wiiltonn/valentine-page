@@ -191,39 +191,31 @@
     .submsg{ color:#5a1733; font-size: 16px; margin: 12px 0 18px; position:relative; z-index:3; }
 
     .photo{
-      width: 230px;
-      height: 230px;
-      margin: 12px auto 18px;
+      width: 260px;
+      height: 260px;
+      margin: 16px auto 20px;
       position:relative;
-      transform: rotate(-2deg);
       z-index: 2;
     }
     .photo .heartframe{
-      width:100%; height:100%;
-      position:absolute; inset:0;
+      width:100%; 
+      height:100%;
+      position:absolute; 
+      inset:0;
       background: #fff;
-      transform: rotate(45deg);
-      border-radius: 22px;
+      border-radius: 28px;
       box-shadow: 0 16px 35px rgba(0,0,0,.16);
       overflow:hidden;
     }
-    .photo .heartframe:before,.photo .heartframe:after{
-      content:"";
-      position:absolute;
-      width:100%; height:100%;
-      background: inherit;
-      border-radius:50%;
-      top:0;
-    }
+    
     .photo .heartframe:before{ left:-50%; }
     .photo .heartframe:after{ top:-50%; left:0; }
     .photo img{
       position:absolute;
-      inset:-10%;
-      width: 120%;
-      height: 120%;
+      inset:0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      transform: rotate(-45deg);
     }
 
     .actions{
@@ -270,6 +262,62 @@
     /* Confetti canvas */
     canvas#confetti{ position:absolute; inset:0; width:100%; height:100%; border-radius: 26px; pointer-events:none; }
 
+    /* Bonus overlay */
+    .bonus{
+      display:none;
+      position:absolute;
+      inset:0;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      background: radial-gradient(900px 650px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
+                  linear-gradient(135deg, rgba(255,94,168,.95), rgba(255,45,85,.95));
+      border-radius: 26px;
+      z-index: 5;
+    }
+    .bonus.show{ display:flex; }
+    .bonus .msg{
+      background: rgba(255,255,255,.94);
+      border-radius: 22px;
+      padding: 18px 16px;
+      width: min(520px, 96%);
+      box-shadow: var(--shadow);
+      text-align:center;
+    }
+    .bonus h2{
+      font-family: Pacifico, cursive;
+      margin: 0 0 6px;
+      color: #d1004b;
+      font-size: 34px;
+    }
+    .bonus p{ margin:0; color:#5a1733; font-size: 16px; }
+
+    .bonusPhoto{ width: 220px; height: 220px; margin: 14px auto 0; position:relative; }
+    .bonusHeart{
+      width:100%; height:100%; position:absolute; inset:0;
+      background:#fff;
+      transform: rotate(45deg);
+      border-radius: 24px;
+      box-shadow: 0 16px 35px rgba(0,0,0,.18);
+      overflow:hidden;
+    }
+    .bonusHeart:before,.bonusHeart:after{
+      content:"";
+      position:absolute;
+      width:100%; height:100%;
+      background: inherit;
+      border-radius:50%;
+    }
+    .bonusHeart:before{ left:-50%; top:0 }
+    .bonusHeart:after{ left:0; top:-50% }
+    .bonusHeart img{
+      position:absolute;
+      inset:-18%;
+      width:136%; height:136%;
+      object-fit: cover;
+      transform: rotate(-45deg);
+    }
+
     .small{font-size:12px; color:rgba(255,255,255,.9); margin-top:12px; text-align:center}
 
     .pill{
@@ -284,7 +332,45 @@
     }
 
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-  </style>
+  
+    /* Fun extras */
+    .yesBtn{ animation: pulse 1.35s ease-in-out infinite; }
+    @keyframes pulse{ 0%,100%{ transform: translateY(0) scale(1);} 50%{ transform: translateY(-1px) scale(1.05);} }
+
+    .burst-heart{
+      position: fixed;
+      font-size: 22px;
+      pointer-events: none;
+      will-change: transform, opacity;
+      animation: burst 900ms ease-out forwards;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.2));
+      z-index: 9999;
+    }
+    @keyframes burst{
+      0%{ transform: translate(0,0) scale(.7); opacity: 0; }
+      12%{ opacity: 1; }
+      100%{ transform: translate(var(--dx), var(--dy)) scale(1.25); opacity: 0; }
+    }
+
+    .mini-toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 999px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow);
+      color: #5a1733;
+      font-weight: 800;
+      font-size: 13px;
+      z-index: 9998;
+      opacity: 0;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .mini-toast.show{ opacity: 1; transform: translateX(-50%) translateY(-4px); }
+</style>
 </head>
 <body>
   <div class="hearts" id="hearts"></div>
@@ -377,9 +463,30 @@
             <div class="msg">
               <h2>I knew you’d say yes! 💕</h2>
               <p>Happy Valentine’s Day, my love. Now come here 🥰</p>
+              <div style="margin-top:12px">
+                <button class="btn pink" id="bonusBtn">One more thing… 💝</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bonus" id="bonus">
+            <div class="msg">
+              <h2>Bonus level unlocked ✨</h2>
+              <p id="bonusText">This is my favourite photo of us. I love you 💗</p>
+
+              <div class="bonusPhoto" id="bonusPhotoBox" style="display:none">
+                <div class="bonusHeart"><img id="bonusPhoto" alt="photo" /></div>
+              </div>
+
+              <div class="row" style="justify-content:center; margin-top:14px">
+                <button class="btn green" id="bonusClose">Ok come cuddle 💖</button>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="small" style="margin-top:-8px">Tip: long-press the screen for a cute pause, then tap anywhere to keep going.</div>
+    </div>
       </div>
       <div class="small" style="margin-top:-8px">Tip: long-press the screen for a cute pause, then tap anywhere to keep going.</div>
     </div>
@@ -543,6 +650,17 @@
 
     // ===== No button evasion =====
     function attachNoEvasion(noBtn, area){
+      const noLines = [
+        'No 🙈',
+        'Nope 😭',
+        'Try again 😜',
+        'Nice try 🤭',
+        'Not a chance 😏',
+        'You missed 😅',
+        'Hehe nope 💅',
+        'Stoppp 😳'
+      ];
+
       const move = () => {
         const rect = area.getBoundingClientRect();
         const b = noBtn.getBoundingClientRect();
@@ -554,6 +672,7 @@
         noBtn.style.position = 'absolute';
         noBtn.style.left = x + 'px';
         noBtn.style.top = y + 'px';
+        noBtn.textContent = noLines[Math.floor(Math.random()*noLines.length)];
       };
 
       // Desktop hover
@@ -574,6 +693,51 @@
 
     // ===== Main =====
     makeHearts();
+
+    // Heart burst wherever you tap/click (cute + mobile friendly)
+    function heartBurst(x, y){
+      const emojis = ['💖','💕','💘','💗','💞','❤️'];
+      for(let i=0;i<10;i++){
+        const el = document.createElement('div');
+        el.className = 'burst-heart';
+        el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        el.style.left = (x - 8) + 'px';
+        el.style.top = (y - 8) + 'px';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 60 + Math.random()*70;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist - (30 + Math.random()*40);
+        el.style.setProperty('--dx', dx + 'px');
+        el.style.setProperty('--dy', dy + 'px');
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 950);
+      }
+    }
+
+    // Tiny toast helper
+    const toast = document.createElement('div');
+    toast.className = 'mini-toast';
+    document.body.appendChild(toast);
+    let toastTimer;
+    function showToast(text){
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> toast.classList.remove('show'), 1200);
+    }
+
+    document.addEventListener('click', (e)=>{
+      // Avoid bursts when clicking buttons in builder to keep it neat
+      const t = e.target;
+      if(t && (t.closest('button') || t.closest('input') || t.closest('textarea'))) return;
+      heartBurst(e.clientX, e.clientY);
+    });
+    document.addEventListener('touchstart', (e)=>{
+      const t = e.target;
+      if(t && (t.closest('button') || t.closest('input') || t.closest('textarea'))) return;
+      const touch = e.touches && e.touches[0];
+      if(touch) heartBurst(touch.clientX, touch.clientY);
+    }, {passive:true});
 
     const incoming = parseIncoming();
     const hasValentine = (incoming.msg || incoming.img);
@@ -658,11 +822,38 @@
       yesBtn.addEventListener('click', () => {
         celebrate.classList.add('show');
         startConfetti(confetti);
+        showToast('Correct answer 😌💘');
       });
 
-      // Tap anywhere to close celebration
-      celebrate.addEventListener('click', () => {
+      // Bonus screen controls
+      const bonus = qs('#bonus');
+      const bonusBtn = qs('#bonusBtn');
+      const bonusClose = qs('#bonusClose');
+      const bonusPhotoBox = qs('#bonusPhotoBox');
+      const bonusPhoto = qs('#bonusPhoto');
+
+      // Put the same photo into the bonus heart
+      if(incoming.img){
+        bonusPhotoBox.style.display = 'block';
+        bonusPhoto.src = incoming.img;
+      }
+
+      bonusBtn.addEventListener('click', () => {
         celebrate.classList.remove('show');
+        bonus.classList.add('show');
+        startConfetti(confetti);
+        showToast('Bonus unlocked ✨');
+      });
+
+      bonusClose.addEventListener('click', () => {
+        bonus.classList.remove('show');
+      });
+
+      // Tap anywhere to close celebration (but not the bonus button)
+      celebrate.addEventListener('click', (e) => {
+        if(e.target && e.target.closest('#bonusBtn')) return;
+        celebrate.classList.remove('show');
+      });
       });
 
     } else {
