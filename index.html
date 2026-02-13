@@ -781,15 +781,25 @@
 
     msgInput.addEventListener('input', refreshPreview);
 
-    qs('#previewBtn').addEventListener('click', refreshPreview);
+    const previewBtn = qs('#previewBtn');
+    if(previewBtn) previewBtn.addEventListener('click', refreshPreview);
 
     function copyToClipboard(text){
       return navigator.clipboard.writeText(text);
     }
 
-    qs('#copyLinkBtn').addEventListener('click', async () => {
+    const copyLinkBtn = qs('#copyLinkBtn');
+    if(copyLinkBtn) copyLinkBtn.addEventListener('click', async () => {
       const {msg, imgUrl, imgData} = currentState();
       const link = buildShareLink({msg, imgUrl, imgData});
+      try{
+        await copyToClipboard(link);
+        copyLinkBtn.textContent = 'Copied ✅';
+        setTimeout(()=> copyLinkBtn.textContent = 'Copy shareable link', 1600);
+      } catch(e){
+        prompt('Copy this link:', link);
+      }
+    });
       try{
         await copyToClipboard(link);
         qs('#copyLinkBtn').textContent = 'Copied ✅';
@@ -799,9 +809,12 @@
       }
     });
 
-    qs('#openLinkBtn').addEventListener('click', () => {
+    const openLinkBtn = qs('#openLinkBtn');
+    if(openLinkBtn) openLinkBtn.addEventListener('click', () => {
       const {msg, imgUrl, imgData} = currentState();
       const link = buildShareLink({msg, imgUrl, imgData});
+      window.location.href = link;
+    });
       window.location.href = link;
     });
 
