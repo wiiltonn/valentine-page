@@ -1,0 +1,676 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Be My Valentine?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#ff5ea8;
+      --bg2:#ff2d55;
+      --bg3:#ffd6e7;
+      --card:#ffffffee;
+      --text:#2a0b19;
+      --muted:#6b2b44;
+      --yes:#19c37d;
+      --no:#ff3b5c;
+      --shadow: 0 18px 60px rgba(0,0,0,.18);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      min-height:100svh;
+      background: radial-gradient(1200px 800px at 20% 10%, var(--bg3), transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* floating hearts background */
+    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
+    .heart{
+      position:absolute;
+      width:18px; height:18px;
+      background: rgba(255,255,255,.65);
+      transform: rotate(45deg);
+      animation: floatUp linear infinite;
+      border-radius:4px;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.12));
+    }
+    .heart:before,.heart:after{
+      content:"";
+      position:absolute;
+      width:18px; height:18px;
+      background: inherit;
+      border-radius:50%;
+    }
+    .heart:before{left:-9px; top:0}
+    .heart:after{left:0; top:-9px}
+
+    @keyframes floatUp{
+      from{ transform: translateY(110vh) rotate(45deg); opacity:0; }
+      10%{opacity:.9}
+      to{ transform: translateY(-20vh) rotate(45deg); opacity:0; }
+    }
+
+    .wrap{
+      position:relative;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 16px 60px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin: 8px 0 18px;
+      color: rgba(255,255,255,.95);
+      text-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+    .topbar .logo{
+      font-family: Pacifico, cursive;
+      font-size: 28px;
+      letter-spacing:.2px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.35);
+      overflow:hidden;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .pane{ padding: 18px; }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+    h1 span{ font-family: Pacifico, cursive; font-weight:400; }
+
+    .hint{color:var(--muted); margin: 0 0 14px;}
+
+    .field{ margin: 12px 0; }
+    label{ display:block; font-weight:800; margin: 0 0 6px; }
+    input[type="text"], textarea{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.12);
+      padding: 12px 12px;
+      font-size: 15px;
+      outline:none;
+      background: rgba(255,255,255,.8);
+    }
+    textarea{ min-height: 120px; resize: vertical; }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      border:0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn.primary{ background: #fff; }
+    .btn.pink{ background: #ffeff7; }
+    .btn.green{ background: var(--yes); color:white; }
+    .btn.copy{ background: #111; color:#fff; }
+
+    .file{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .file input[type="file"]{ width:100%; }
+
+    .note{
+      margin-top: 10px;
+      background: rgba(255, 231, 244, .7);
+      border: 1px dashed rgba(0,0,0,.15);
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: #4b1730;
+      font-size: 13px;
+    }
+
+    /* Preview (valentine) */
+    .val-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 22px;
+      min-height: 560px;
+      position:relative;
+    }
+
+    .val-card{
+      width: min(640px, 100%);
+      border-radius: 26px;
+      padding: 22px 18px 18px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.45);
+      box-shadow: var(--shadow);
+      position:relative;
+      text-align:center;
+    }
+
+    .headline{
+      font-family: Pacifico, cursive;
+      font-size: 40px;
+      margin: 6px 0 8px;
+      color: #d1004b;
+    }
+    @media (max-width: 420px){
+      .headline{font-size: 34px}
+    }
+
+    .submsg{ color:#5a1733; font-size: 16px; margin: 0 0 14px; }
+
+    .photo{
+      width: 190px;
+      height: 190px;
+      margin: 8px auto 14px;
+      position:relative;
+      transform: rotate(-2deg);
+    }
+    .photo .heartframe{
+      width:100%; height:100%;
+      position:absolute; inset:0;
+      background: #fff;
+      transform: rotate(45deg);
+      border-radius: 22px;
+      box-shadow: 0 16px 35px rgba(0,0,0,.16);
+      overflow:hidden;
+    }
+    .photo .heartframe:before,.photo .heartframe:after{
+      content:"";
+      position:absolute;
+      width:100%; height:100%;
+      background: inherit;
+      border-radius:50%;
+      top:0;
+    }
+    .photo .heartframe:before{ left:-50%; }
+    .photo .heartframe:after{ top:-50%; left:0; }
+    .photo img{
+      position:absolute;
+      inset:-22%;
+      width: 144%;
+      height: 144%;
+      object-fit: cover;
+      transform: rotate(-45deg);
+    }
+
+    .actions{
+      display:flex;
+      gap: 12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 14px;
+      min-height: 56px;
+      position:relative;
+    }
+
+    .yesBtn{ background: var(--yes); color:#fff; }
+    .noBtn{ background: #ffeff2; color: #b9002f; position:relative; }
+
+    /* Celebration */
+    .celebrate{
+      display:none;
+      position:absolute;
+      inset:0;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      background: radial-gradient(900px 650px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
+                  linear-gradient(135deg, rgba(255,94,168,.9), rgba(255,45,85,.9));
+      border-radius: 26px;
+    }
+    .celebrate.show{ display:flex; }
+    .celebrate .msg{
+      background: rgba(255,255,255,.92);
+      border-radius: 22px;
+      padding: 18px 16px;
+      width: min(520px, 96%);
+      box-shadow: var(--shadow);
+    }
+    .celebrate h2{
+      font-family: Pacifico, cursive;
+      margin: 0 0 6px;
+      color: #d1004b;
+      font-size: 36px;
+    }
+    .celebrate p{ margin:0; color:#5a1733; font-size: 16px; }
+
+    /* Confetti canvas */
+    canvas#confetti{ position:absolute; inset:0; width:100%; height:100%; border-radius: 26px; pointer-events:none; }
+
+    .small{font-size:12px; color:rgba(255,255,255,.9); margin-top:12px; text-align:center}
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.2);
+      color: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.25);
+      font-size: 12px;
+      margin: 10px auto 0;
+    }
+
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="logo">Valentine Ask Page</div>
+    </div>
+
+    <div class="card" id="builderCard">
+      <div class="pane">
+        <h1>Customize your <span>Valentine</span> 💝</h1>
+        <p class="hint">Upload a photo, write your message, preview it, then generate a shareable link.</p>
+
+        <div class="grid">
+          <div class="pane" style="padding:0">
+            <div class="field">
+              <label for="photo">Photo (optional)</label>
+              <div class="file">
+                <input id="photo" type="file" accept="image/*" />
+              </div>
+              <div class="note">
+                Tip: keep the image small for sharing. This page embeds the photo into the link, so very large photos can make the link too long.
+                If the link fails to open, use a smaller image or host it somewhere and paste the image URL instead.
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="photoUrl">Or use an image URL (recommended for easy sharing)</label>
+              <input id="photoUrl" type="text" placeholder="https://... (optional)" />
+            </div>
+
+            <div class="field">
+              <label for="message">Your message</label>
+              <textarea id="message" placeholder="Write something sweet...">I love you so much. You make my life brighter every day. 💕</textarea>
+            </div>
+
+            <div class="row">
+              <button class="btn green" id="previewBtn">Preview</button>
+              <button class="btn copy" id="copyLinkBtn" title="Copies a shareable link">Copy shareable link</button>
+              <button class="btn pink" id="openLinkBtn">Open valentine page</button>
+            </div>
+
+            <div class="note">
+              Privacy note: This is just a single HTML file. If you use an image URL, whoever has the link can load that image.
+              If you embed the photo, it will be inside the URL.
+            </div>
+          </div>
+
+          <div class="pane" style="padding:0">
+            <div class="val-wrap">
+              <div class="val-card" id="previewCard">
+                <div class="headline">Will you be my Valentine?</div>
+                <div class="photo" id="photoBox" style="display:none">
+                  <div class="heartframe"><img id="photoImg" alt="photo" /></div>
+                </div>
+                <p class="submsg" id="msgOut"></p>
+                <div class="actions">
+                  <button class="btn yesBtn" disabled>Yes 💖</button>
+                  <button class="btn noBtn" disabled>No 🙈</button>
+                </div>
+                <div class="pill">Preview only — buttons work on the shared page</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="small">Made with ❤️ — save as <span class="mono">valentine.html</span> and host on GitHub Pages / Netlify / Vercel for a clean link.</div>
+      </div>
+    </div>
+
+    <div class="card" id="valentineCard" style="display:none">
+      <div class="val-wrap">
+        <div class="val-card" id="liveCard">
+          <canvas id="confetti"></canvas>
+          <div class="headline">Will you be my Valentine?</div>
+
+          <div class="photo" id="livePhotoBox" style="display:none">
+            <div class="heartframe"><img id="livePhoto" alt="photo" /></div>
+          </div>
+
+          <p class="submsg" id="liveMsg"></p>
+
+          <div class="actions" id="btnArea">
+            <button class="btn yesBtn" id="yesBtn">Yes 💖</button>
+            <button class="btn noBtn" id="noBtn">No 🙈</button>
+          </div>
+
+          <div class="celebrate" id="celebrate">
+            <div class="msg">
+              <h2>I knew you’d say yes! 💕</h2>
+              <p>Happy Valentine’s Day, my love. Now come here 🥰</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="small" style="margin-top:-8px">Tip: long-press the screen for a cute pause, then tap anywhere to keep going.</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== Helpers =====
+    const qs = (s) => document.querySelector(s);
+    const enc = (s) => encodeURIComponent(s || "");
+    const dec = (s) => decodeURIComponent(s || "");
+
+    function makeHearts(){
+      const container = qs('#hearts');
+      const count = 26;
+      for(let i=0;i<count;i++){
+        const h = document.createElement('div');
+        h.className='heart';
+        const left = Math.random()*100;
+        const size = 12 + Math.random()*18;
+        const dur = 8 + Math.random()*10;
+        const delay = Math.random()*6;
+        h.style.left = left + 'vw';
+        h.style.width = size + 'px';
+        h.style.height = size + 'px';
+        h.style.animationDuration = dur + 's';
+        h.style.animationDelay = delay + 's';
+        h.style.opacity = (0.35 + Math.random()*0.5).toFixed(2);
+        container.appendChild(h);
+      }
+    }
+
+    function compressImageToDataURL(file, maxW=900, quality=0.78){
+      return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            const scale = Math.min(1, maxW / img.width);
+            const w = Math.round(img.width * scale);
+            const h = Math.round(img.height * scale);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          img.onerror = reject;
+          img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function setPreview(photoSrc, msg){
+      const msgOut = qs('#msgOut');
+      const photoBox = qs('#photoBox');
+      const img = qs('#photoImg');
+      msgOut.textContent = msg || '';
+      if(photoSrc){
+        photoBox.style.display='block';
+        img.src = photoSrc;
+      } else {
+        photoBox.style.display='none';
+        img.removeAttribute('src');
+      }
+    }
+
+    function setLive(photoSrc, msg){
+      qs('#liveMsg').textContent = msg || '';
+      const liveBox = qs('#livePhotoBox');
+      const liveImg = qs('#livePhoto');
+      if(photoSrc){
+        liveBox.style.display='block';
+        liveImg.src = photoSrc;
+      } else {
+        liveBox.style.display='none';
+        liveImg.removeAttribute('src');
+      }
+    }
+
+    function buildShareLink({msg, imgUrl, imgData}){
+      // Prefer imgUrl if present; otherwise embed compressed data URL in hash
+      const base = location.href.split('#')[0].split('?')[0];
+      const params = new URLSearchParams();
+      params.set('m', msg || '');
+      if(imgUrl) params.set('img', imgUrl);
+      // Use hash for big data to avoid server logs/query truncation.
+      const hash = imgData ? '#d=' + enc(imgData) : '';
+      return base + '?' + params.toString() + hash;
+    }
+
+    function parseIncoming(){
+      const params = new URLSearchParams(location.search);
+      const msg = params.get('m') ? dec(params.get('m')) : '';
+      const imgUrl = params.get('img') ? dec(params.get('img')) : '';
+      let imgData = '';
+      if(location.hash.startsWith('#d=')) imgData = dec(location.hash.slice(3));
+      return { msg, img: imgUrl || imgData };
+    }
+
+    // ===== Confetti =====
+    function startConfetti(canvas){
+      const ctx = canvas.getContext('2d');
+      const DPR = window.devicePixelRatio || 1;
+      function resize(){
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = Math.floor(rect.width * DPR);
+        canvas.height = Math.floor(rect.height * DPR);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const pieces = Array.from({length: 130}).map(()=>({
+        x: Math.random()*canvas.width,
+        y: -Math.random()*canvas.height,
+        w: 6 + Math.random()*10,
+        h: 8 + Math.random()*14,
+        vx: (-1 + Math.random()*2) * 1.6,
+        vy: 2.2 + Math.random()*3.0,
+        rot: Math.random()*Math.PI,
+        vr: (-1 + Math.random()*2) * 0.12,
+        alpha: 0.7 + Math.random()*0.3,
+      }));
+
+      let running = true;
+      let stopAt = performance.now() + 5200;
+
+      function draw(){
+        if(!running) return;
+        const now = performance.now();
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(const p of pieces){
+          p.x += p.vx * DPR;
+          p.y += p.vy * DPR;
+          p.rot += p.vr;
+          if(p.y > canvas.height + 40) p.y = -40;
+          if(p.x < -40) p.x = canvas.width + 40;
+          if(p.x > canvas.width + 40) p.x = -40;
+
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          // no explicit colors; use gradient-like grayscale confetti
+          ctx.fillStyle = 'rgba(255,255,255,.85)';
+          ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+          ctx.restore();
+        }
+        if(now < stopAt){
+          requestAnimationFrame(draw);
+        } else {
+          running = false;
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    // ===== No button evasion =====
+    function attachNoEvasion(noBtn, area){
+      const move = () => {
+        const rect = area.getBoundingClientRect();
+        const b = noBtn.getBoundingClientRect();
+        const pad = 8;
+        const maxX = rect.width - b.width - pad;
+        const maxY = rect.height - b.height - pad;
+        const x = pad + Math.random() * Math.max(0, maxX - pad);
+        const y = pad + Math.random() * Math.max(0, maxY - pad);
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+      };
+
+      // Desktop hover
+      noBtn.addEventListener('mouseenter', move);
+      // Mobile taps
+      noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); }, {passive:false});
+      // Also move when the user gets close (optional, fun)
+      area.addEventListener('mousemove', (e) => {
+        const r = noBtn.getBoundingClientRect();
+        const dx = Math.abs(e.clientX - (r.left + r.width/2));
+        const dy = Math.abs(e.clientY - (r.top + r.height/2));
+        if(dx < 90 && dy < 70) move();
+      });
+
+      // set initial absolute positioning
+      requestAnimationFrame(move);
+    }
+
+    // ===== Main =====
+    makeHearts();
+
+    const incoming = parseIncoming();
+    const hasValentine = (incoming.msg || incoming.img);
+
+    const builderCard = qs('#builderCard');
+    const valentineCard = qs('#valentineCard');
+
+    let embeddedDataUrl = '';
+
+    // Builder UI
+    const photoInput = qs('#photo');
+    const photoUrlInput = qs('#photoUrl');
+    const msgInput = qs('#message');
+
+    function currentState(){
+      const msg = msgInput.value.trim();
+      const imgUrl = photoUrlInput.value.trim();
+      const imgData = imgUrl ? '' : embeddedDataUrl; // prefer URL
+      const img = imgUrl || imgData;
+      return { msg, imgUrl, imgData, img };
+    }
+
+    function refreshPreview(){
+      const {msg, img} = currentState();
+      setPreview(img, msg);
+    }
+
+    photoInput.addEventListener('change', async () => {
+      const file = photoInput.files && photoInput.files[0];
+      if(!file) return;
+      // If they upload a file, we clear URL field so the embed is used
+      photoUrlInput.value = '';
+      embeddedDataUrl = await compressImageToDataURL(file);
+      refreshPreview();
+    });
+
+    photoUrlInput.addEventListener('input', () => {
+      if(photoUrlInput.value.trim()) embeddedDataUrl = '';
+      refreshPreview();
+    });
+
+    msgInput.addEventListener('input', refreshPreview);
+
+    qs('#previewBtn').addEventListener('click', refreshPreview);
+
+    function copyToClipboard(text){
+      return navigator.clipboard.writeText(text);
+    }
+
+    qs('#copyLinkBtn').addEventListener('click', async () => {
+      const {msg, imgUrl, imgData} = currentState();
+      const link = buildShareLink({msg, imgUrl, imgData});
+      try{
+        await copyToClipboard(link);
+        qs('#copyLinkBtn').textContent = 'Copied ✅';
+        setTimeout(()=> qs('#copyLinkBtn').textContent = 'Copy shareable link', 1600);
+      } catch(e){
+        prompt('Copy this link:', link);
+      }
+    });
+
+    qs('#openLinkBtn').addEventListener('click', () => {
+      const {msg, imgUrl, imgData} = currentState();
+      const link = buildShareLink({msg, imgUrl, imgData});
+      window.location.href = link;
+    });
+
+    // If incoming params exist, show Valentine page
+    if(hasValentine){
+      builderCard.style.display='none';
+      valentineCard.style.display='block';
+      setLive(incoming.img, incoming.msg);
+
+      const yesBtn = qs('#yesBtn');
+      const noBtn = qs('#noBtn');
+      const celebrate = qs('#celebrate');
+      const confetti = qs('#confetti');
+      const btnArea = qs('#btnArea');
+
+      attachNoEvasion(noBtn, btnArea);
+
+      yesBtn.addEventListener('click', () => {
+        celebrate.classList.add('show');
+        startConfetti(confetti);
+      });
+
+      // Tap anywhere to close celebration
+      celebrate.addEventListener('click', () => {
+        celebrate.classList.remove('show');
+      });
+
+    } else {
+      // Default: builder page
+      builderCard.style.display='block';
+      valentineCard.style.display='none';
+      refreshPreview();
+    }
+
+  </script>
+</body>
+</html>
